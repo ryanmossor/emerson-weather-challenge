@@ -1,5 +1,14 @@
 const apiKey = 'cf002751564a4c78f5f7ed479f1b9ba3';
 
+/* Store latitude/longitude in same object format as browser's geolocator for consistency
+Used in getWeatherByCoordinates() to retrieve current conditions */
+let inputCoords = {
+    coords: {
+        latitude: '',
+        longitude: ''
+    }
+}
+
 // preventDefault() to stop form from being submitted
 document.getElementById("search-button").addEventListener("click", function(event) {
     event.preventDefault();
@@ -9,10 +18,86 @@ document.getElementById("location-button").addEventListener("click", function(ev
     event.preventDefault();
 });
 
-// Takes a position object, retrieves weather using latitude/longitude
-const getWeatherByCoordinates = async(position) => {
-    let lat = position.coords.latitude;
-    let lon = position.coords.longitude;
+/* Use browser's geolocation to get current location
+Calls getWeatherByCoordinates() to retrieve current conditions */
+const getLocation = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getWeatherByCoordinates);
+    }
+}
+
+// Regex to check if ZIP code is 5 digits
+const isValidZip = (zip) => {
+    return /^\d{5}?$/.test(zip);
+}
+
+// Converts user input to coordinates if necessary, then calls getWeatherByCoordinates()
+const parseLocation = async() => {
+    // Store user's input from search bar as a variable
+    let input = document.getElementById("search-bar").value;
+
+    // Search by ZIP code if isValidZip() returns true
+    if (isValidZip(input)) {
+        try {
+            let response = await fetch(`https://api.openweathermap.org/geo/1.0/zip?zip=${input}&appid=${apiKey}`);
+            
+            let data = await response.json();
+
+            // Throw error if invalid ZIP entered; otherwise get lat/lon and call getWeatherByCoordinates()
+            if (data.length === 0 || data.cod === '404') {
+                alert("Please enter a valid input");
+            } else {
+                inputCoords.coords.latitude = data.lat;
+                inputCoords.coords.longitude = data.lon;
+            
+                getWeatherByCoordinates(inputCoords);   
+            } 
+        } catch(err) {
+            console.error(err);
+        }
+    // Search by coordinates
+    } else if (input.includes(",")) {
+        // If user input contains a comma, split input and store the values in latitude/longitude variables
+        let coordsArr = input.split(",");
+
+        let lat = parseFloat(coordsArr[0]);
+        let lon = parseFloat(coordsArr[1]);
+
+        // Check that latitude/longitude values are valid
+        if ((lat >= -90 && lat <= 90) && (lon >= -180 && lon <= 180)) {
+            inputCoords.coords.latitude = lat;
+            inputCoords.coords.longitude = lon;
+
+            getWeatherByCoordinates(inputCoords);
+        } else {
+            alert("Please enter a valid input");
+        }
+    // Search by city
+    } else {
+        try {
+            let response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=1&appid=${apiKey}`);
+            
+            let data = await response.json();
+
+            // Throw error if invalid city entered; otherwise get lat/lon and call getWeatherByCoordinates()
+            if (data.length === 0) {
+                alert("Please enter a valid input");
+            } else {
+                inputCoords.coords.latitude = data[0].lat;
+                inputCoords.coords.longitude = data[0].lon;
+            
+                getWeatherByCoordinates(inputCoords);   
+            }
+        } catch(err) {
+            console.error(err);
+        }
+    }
+}
+
+// Takes a coordinates object, retrieves weather using latitude/longitude
+const getWeatherByCoordinates = async(coordsObj) => {
+    let lat = coordsObj.coords.latitude;
+    let lon = coordsObj.coords.longitude;
 
     try {
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`);
@@ -25,6 +110,7 @@ const getWeatherByCoordinates = async(position) => {
     }
 }
 
+// Takes JSON containing weather data; formats and displays it to user
 const printCurrentConditions = (json) => {
     // Store weather data in variables, round values where necessary
     let icon = `https://openweathermap.org/img/wn/${json.weather[0].icon}@2x.png`;
@@ -76,87 +162,4 @@ const printCurrentConditions = (json) => {
     
     // Update header with searched location
     document.getElementById("current-conditions").innerText = `Weather for ${city}`;
-}
-
-// Get current location using browser's geolocation functionality
-const getLocation = () => {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(getWeatherByCoordinates);
-    }
-}
-
-// Regex to check if ZIP code is 5 digits
-const isValidZip = (zip) => {
-    return /^\d{5}?$/.test(zip);
-}
-
-// Converts user input to coordinates if necessary, then calls getWeatherByCoordinates()
-const parseLocation = async() => {
-    // Store user's input from search bar as a variable
-    let input = document.getElementById("search-bar").value;
-
-    // Store latitude/longitude in same object format as browser's geolocator for consistency
-    let position = {
-        coords: {
-            latitude: '',
-            longitude: ''
-        }
-    }
-
-    // Search by ZIP code if isValidZip() returns true
-    if (isValidZip(input)) {
-        try {
-            let response = await fetch(`https://api.openweathermap.org/geo/1.0/zip?zip=${input}&appid=${apiKey}`);
-            
-            let data = await response.json();
-
-            // Throw error if invalid ZIP entered; otherwise get lat/lon and call getWeatherByCoordinates()
-            if (data.length === 0 || data.cod === '404') {
-                alert("Please enter a valid input");
-            } else {
-                position.coords.latitude = data.lat;
-                position.coords.longitude = data.lon;
-            
-                getWeatherByCoordinates(position);   
-            } 
-        } catch(err) {
-            console.error(err);
-        }
-    // Search by coordinates
-    } else if (input.includes(",")) {
-        // If user input contains a comma, split the input and store the values in latitude/longitude variables
-        let coordsArr = input.split(",");
-
-        let lat = parseFloat(coordsArr[0]);
-        let lon = parseFloat(coordsArr[1]);
-
-        // Check that latitude/longitude values are valid
-        if ((lat >= -90 && lat <= 90) && (lon >= -180 && lon <= 180)) {
-            position.coords.latitude = lat;
-            position.coords.longitude = lon;
-
-            getWeatherByCoordinates(position);
-        } else {
-            alert("Please enter a valid input");
-        }
-    // Search by city
-    } else {
-        try {
-            let response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=1&appid=${apiKey}`);
-            
-            let data = await response.json();
-
-            // Throw error if invalid city entered; otherwise get lat/lon and call getWeatherByCoordinates()
-            if (data.length === 0) {
-                alert("Please enter a valid input");
-            } else {
-                position.coords.latitude = data[0].lat;
-                position.coords.longitude = data[0].lon;
-            
-                getWeatherByCoordinates(position);   
-            }
-        } catch(err) {
-            console.error(err);
-        }
-    }
 }
