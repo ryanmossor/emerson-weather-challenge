@@ -9,7 +9,7 @@ document.getElementById("location-button").addEventListener("click", function(ev
     event.preventDefault();
 });
 
-// Takes a position object, 
+// Takes a position object, retrieves weather using latitude/longitude
 const getWeatherByCoordinates = async(position) => {
     let lat = position.coords.latitude;
     let lon = position.coords.longitude;
