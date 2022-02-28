@@ -18,7 +18,6 @@ const getWeatherByCoordinates = async(position) => {
         let response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${apiKey}&units=imperial`);
         
         let data = await response.json();
-        console.log(data);
 
         printCurrentConditions(data);
     } catch(err) {
