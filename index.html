@@ -14,11 +14,17 @@
 <body>
     <div id="results-card">
         <h1 id="current-conditions">Emerson Weather Challenge</h1>
-
-        <input type="text" id="search-bar" placeholder="Search by city, 5-digit ZIP code, or coordinates"
-            name="location" />
-        <button onclick="parseLocation()" id="search-button"><i class="bi bi-search"></i></button>
-        <button onclick="getLocation()" id="location-button"><i class="bi bi-geo-alt-fill"></i></button>
+        <form action="/">
+            <div>
+                <input type="text" id="search-bar" placeholder="Search by city, 5-digit ZIP code, or coordinates"
+                    name="location" />
+            </div>
+            <div id="buttons">
+                <input onclick="parseLocation()" type="submit" value="Search" id="search-button" />
+                <button onclick="getLocation()" id="location-button"><i class="bi bi-geo-alt-fill"></i> Use My
+                    Location</button>
+            </div>
+        </form>
 
         <div id="results"></div>
 

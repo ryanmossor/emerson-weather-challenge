@@ -1,5 +1,14 @@
 const apiKey = 'cf002751564a4c78f5f7ed479f1b9ba3';
 
+// preventDefault() to stop form from being submitted
+document.getElementById("search-button").addEventListener("click", function(event) {
+    event.preventDefault();
+});
+
+document.getElementById("location-button").addEventListener("click", function(event) {
+    event.preventDefault();
+});
+
 // Takes a position object, 
 const getWeatherByCoordinates = async(position) => {
     let lat = position.coords.latitude;
