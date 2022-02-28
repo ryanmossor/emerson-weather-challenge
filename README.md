@@ -6,7 +6,7 @@ This app makes use of [OpenWeather's Geocoding API](https://openweathermap.org/a
 
 ## Usage
 
-Enter a desired city name, 5-digit ZIP code, or geographic coordinates into the search bar and click "Search" to retrieve weather data. Alternatively, click on the "Use My Location" button and grant location permission in your browser to retrieve weather data for your current location.
+Click [here](https://ryanmossor.github.io/emerson-weather-challenge/) to try the app. Enter a desired city name, 5-digit ZIP code, or geographic coordinates into the search bar and click "Search" to retrieve weather data. Alternatively, click on the "Use My Location" button and grant location permission in your browser to retrieve weather data for your current location.
 
 ### Valid Sample Inputs
 
