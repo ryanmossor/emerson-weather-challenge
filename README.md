@@ -19,3 +19,8 @@ Enter a desired city name, 5-digit ZIP code, or geographic coordinates into the 
 -   4792 (invalid ZIP code)
 -   fipajlksk (invalid city name)
 -   91.1234, 209.1234 (invalid coordinates)
+
+## Sample Images
+
+![](./img/weather1.png "Default screen")
+![](./img/weather2.png "Results for London")
