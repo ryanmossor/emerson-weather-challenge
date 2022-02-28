@@ -6,12 +6,23 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <script defer src="./script.js"></script>
     <title>Emerson Weather Challenge</title>
 </head>
 
 <body>
-    <h1>Hello World</h1>
+    <div id="results-card">
+        <h1 id="current-conditions">Emerson Weather Challenge</h1>
+
+        <input type="text" id="search-bar" placeholder="Search by city, 5-digit ZIP code, or coordinates"
+            name="location" />
+        <button onclick="parseLocation()" id="search-button"><i class="bi bi-search"></i></button>
+        <button onclick="getLocation()" id="location-button"><i class="bi bi-geo-alt-fill"></i></button>
+
+        <div id="results"></div>
+
+    </div>
 </body>
 
 </html>

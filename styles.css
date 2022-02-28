@@ -1,0 +1,74 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	background-image: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3)),
+		url("https://images.unsplash.com/photo-1580193769210-b8d1c049a7d9");
+	background-size: cover;
+	background-attachment: fixed;
+	color: white;
+}
+
+#search-bar {
+	width: 25rem;
+	height: 2rem;
+	border-radius: 25px;
+	border: none;
+	outline: none;
+	padding: 0.4rem 1rem;
+	font-size: 95%;
+}
+
+#search-button,
+#location-button {
+	margin: 0.5rem;
+	border-radius: 50%;
+	border: none;
+	outline: none;
+	width: 2.75rem;
+	height: 2.75rem;
+}
+
+#search-button:hover,
+#location-button:hover {
+	cursor: pointer;
+	background-color: #0d6efd;
+	color: #fff;
+}
+
+i {
+	font-size: 20px;
+}
+
+#currentTemp {
+	font-weight: 600;
+	font-size: 2rem;
+}
+
+#time {
+	text-align: center;
+	margin-bottom: -5px;
+}
+
+#description {
+	text-align: center;
+	text-transform: capitalize;
+	margin-top: -5px;
+}
+
+#results,
+.flex {
+	padding: 15px 0 0 0;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+}
+
+#results-card {
+	background-color: #111111cc;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding: 2.5rem 4rem;
+	/* margin: 5rem; */
+	border-radius: 15px;
+}
