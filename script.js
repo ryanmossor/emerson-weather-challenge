@@ -28,7 +28,7 @@ const getWeatherByCoordinates = async(position) => {
 
 const printCurrentConditions = (json) => {
     // Store weather data in variables, round values where necessary
-    let icon = `http://openweathermap.org/img/wn/${json.weather[0].icon}@2x.png`;
+    let icon = `https://openweathermap.org/img/wn/${json.weather[0].icon}@2x.png`;
     let weather = json.weather[0].description;
     let temp = Math.round(json.main.temp);
     let feelsLike = Math.round(json.main.feels_like);
@@ -107,7 +107,7 @@ const parseLocation = async() => {
     // Search by ZIP code if isValidZip() returns true
     if (isValidZip(input)) {
         try {
-            let response = await fetch(`http://api.openweathermap.org/geo/1.0/zip?zip=${input}&appid=${apiKey}`);
+            let response = await fetch(`https://api.openweathermap.org/geo/1.0/zip?zip=${input}&appid=${apiKey}`);
             
             let data = await response.json();
 
@@ -143,7 +143,7 @@ const parseLocation = async() => {
     // Search by city
     } else {
         try {
-            let response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=1&appid=${apiKey}`);
+            let response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=1&appid=${apiKey}`);
             
             let data = await response.json();
 
